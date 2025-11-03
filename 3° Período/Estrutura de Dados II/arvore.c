@@ -1,11 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// ============================
-// ESTRUTURAS
-// ============================
-
-// Estrutura do nó da árvore
 typedef struct No {
     int valor;
     struct No* esquerda;
@@ -17,14 +12,11 @@ typedef struct Arvore {
     No* raiz;
 } Arvore;
 
-// ============================
-// CRIAÇÃO
-// ============================
 
 // Cria a árvore inicial com cabeça
 Arvore* criarArvore() {
-    Arvore* arv = malloc(sizeof(Arvore)); // aloca espaço para a árvore
-    arv->raiz = NULL;                     // inicialmente a raiz é nula
+    Arvore* arv = malloc(sizeof(Arvore)); 
+    arv->raiz = NULL;                    
     return arv;
 }
 
@@ -36,10 +28,6 @@ No* criarNo(int valor) {
     novo->direita = NULL;
     return novo;
 }
-
-// ============================
-// INSERÇÃO ORDENADA
-// ============================
 
 No* inserirOrdenado(No* raiz, int valor) {
     if (raiz == NULL)
@@ -53,9 +41,6 @@ No* inserirOrdenado(No* raiz, int valor) {
     return raiz; // retorna a raiz para manter a ligação
 }
 
-// ============================
-// ALTURA DE UMA SUBÁRVORE
-// ============================
 
 int altura(No* raiz) {
     if (raiz == NULL)
@@ -110,18 +95,13 @@ No* remover(No* raiz, int valor) {
         }
 
         // CASO 3: dois filhos
-        No* temp = menorDireita(raiz->direita); // menor da subárvore direita
-        raiz->valor = temp->valor;              // copia o valor
-        raiz->direita = remover(raiz->direita, temp->valor); // remove o duplicado
+        No* temp = menorDireita(raiz->direita); 
+        raiz->valor = temp->valor;
+        raiz->direita = remover(raiz->direita, temp->valor); 
     }
     return raiz;
 }
 
-// ============================
-// IMPRESSÕES
-// ============================
-
-// Pré-ordem: raiz, esquerda, direita
 void preOrdem(No* raiz) {
     if (raiz) {
         printf("%d ", raiz->valor);
@@ -130,7 +110,6 @@ void preOrdem(No* raiz) {
     }
 }
 
-// Em ordem: esquerda, raiz, direita
 void emOrdem(No* raiz) {
     if (raiz) {
         emOrdem(raiz->esquerda);
@@ -139,7 +118,6 @@ void emOrdem(No* raiz) {
     }
 }
 
-// Pós-ordem: esquerda, direita, raiz
 void posOrdem(No* raiz) {
     if (raiz) {
         posOrdem(raiz->esquerda);
@@ -147,10 +125,6 @@ void posOrdem(No* raiz) {
         printf("%d ", raiz->valor);
     }
 }
-
-// ============================
-// FUNÇÃO PRINCIPAL
-// ============================
 
 int main() {
     Arvore* minhaArvore = criarArvore();
