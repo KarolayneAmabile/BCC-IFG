@@ -1,0 +1,49 @@
+Karolayne Amábile Brito Borges
+5P - Bacharelado em Ciência da Computação
+
+1. As mais profundas tecnologias são aquelas que ‘desaparecem’. Comente tal citação.
+As tecnologias mais profundas são aquelas que desaparecem, pois essas são as que se mesclam silenciosamente ao cotidiano até que se tornem inseparáveis dele.
+
+2. Cite exemplos de tecnologias que ‘desaparecem’ em nossa sociedade.
+A escrita, a impressão gráfica, a eletricidade e mais recentemente, a internet, são exemplos de tecnologia que outrora não existiam e hoje ditam a forma que vivemos.
+
+3. Porque o termo computador pessoal é utilizado de forma errada de acordo com Weiser?
+Para Weiser, o termo computador pessoal era usado incorretamente pois esses representavam apenas um passo transitório em direção ao real potencial que a tecnologia da informação é capaz de fornecer. Os computadores da época não eram capzes de, de fato, integrar de forma invísivel a vida dos seus usuários.
+
+4. O ‘desaparecimento’ dos dispositivos computacionais é resultado de nossa tecnologia ou nossa psicologia? Explique com exemplos.
+O desaparecimento dos dispositivos computacionais virá como consequência não da tecnologia, mas da psicologia humana; uma vez que as pessoas possuam conhecimento de uma tecnologia suficientemente bem, o estado de conciência a cerca dela desaparece - como é o caso da escrita. Quando olhamos para um sinal de transito na rua, por exemplo, absorvemos a informação precisar performar o ato consciente de realizar a leitura, é quase automático; ler não é díficil pois conhecemos a leitura e os signos que compõe os sinais de transito de forma suficiente a permtir que esses habitem nosso dia-a-dia de maneira invísivel.
+
+5. Computação Ubíqua é levar notebooks em nossas viagens? Para o campo ou praia? Explique.
+Não. Para Weiser, a computação ubíqua não é levar computadores em viagens, pois concentrar a tecnologia que a computação permite em uma única máquina não a torna ubíqua, mesmo que essa se torne um dispositivo de fácil locomoção.
+
+6. Porque computadores ubíquos, que reproduzem sons e vídeos, não podem e não devem ser confundidos com computadores multimídia?
+Pois os computadores multimedia trazem atenção a tela do computador em si, ao invés de permtir que o computador se torne um dispositivo multimídia em background. 
+
+7. Como a realidade virtual vai contra a computação ubíqua?
+A realidade virtual cumpre o seu papel ao permtir que pessoas que possuam os dispositivos necessários para experênciá-la possam interagir com outras formas de realidade antes não possíveis; entretanto, esse ideal vai contra a computação ubíqua, pois esta se fecha para o mundo exterior; excluí de si escritórios, árvores, grama e quaisquer pessoas que não possuam a lista de equipamentos necessários para adentrar. A realidade virtual se preocupa em criar uma nova realidade, e não em informatizar a realidade das pessoas. O processo de entrar na realidade virtual é extremamente conciente.
+
+8. Explique como uma tecnologia pode sumir no plano de fundo da sociedade. Dica: utilize o exemplo do motor elétrico.
+
+9. Como a computação sensível ao contexto é explorada no texto? Ela é requisito para a computação ubíqua?
+Ser sensível ao contexto é necessário para a computação obíqua, pois torna possível que ele adapte o seu comportamento ao ambiente sem sequer possuir algum tipo de inteligência artificial.
+
+10. Explique com suas palavras o que são as ‘tabs’ descritas no texto. Fale sobre o exemplo de portar um aplicativo de um desktop para uma ‘tab’.
+As tabs descritas no texto são dispositivos que podem assumir diferentes tamanhos, de acordo com a tarefa específica que ele busca cumprir. Elas seriam os menores componentes de uma realidade virtual incorporada ao cotidiano das pessoas. Devido a interconexão, tabs poderão expadir o potencial de computadores designados para atividades específicas, como calculadores, e receber funções que computadores desktop não são capazes de performar atualmente. É um conceito pararlelo as tabs de um desktop, que é a representação da interface gráfica de um único programa, que assume as suas peculiaridades livremente. 
+
+11. Qual a principal diferença entre uma ‘tab’ e um tablet?
+Segundo o autor, uma tab seria um dispositivo pequeno com funcionamento similiar a um post-it, com próposito específico; um tablet é um computador de uso geral completo, quase como uma evolução do computador, e portanto possui os mesmos problemas atrelados a ele.
+
+12. O autor, Weiser, defende que a computação ubíqua requer três itens para funcionar: preço baixo (cheap), computadores de baixo consumo energético e software para implementar sistemas ubíquos. Comente os três itens utilizando a atualidade.
+É preciso que a computação obíqua possua preço baixo, computadores de baixo consumo energético e software correto pois é necessário que os produtos gerados a partir dela sejam altamente acessíveis em quantidade, para que o ambiente todo possa ser informatizado, e em qualidade, para que o computador se torne invísivel.
+
+13. Porque um sistema Operacional tipo UNIX ou DOS não é adequado a computação ubíqua? Explique com exemplos.
+Pois eles assumem uma configuração de hardware e software fixa no seu core; no contexto da computação obíqua, em que dispositivos computacionais vão e voltam a depender do contexto e das pessoas que a usam, é preciso que haja uma flexibilidade muito maior. Novos softwares para novos dipsositivos podem ser necessários a qualquer momento, e não deve ser necessário reiniciar os dispositivos da sala para isso. 
+
+14. Quais são os três tipos de redes de computadores necessárias, até hoje, para dispositivos móveis?
+As três tipos de rede são: WAN, LAN E PAN.
+
+15. Descreva com suas palavras um cenário de uso da computação ubíqua. Pode usar o exemplo do texto.
+Um professor se dirige até a escola com o seu carro automático para dar aula. Ao chegar, o carro estaciona sozinho na sua vaga no estacionamento enquanto ele seleciona o material da aula do dia em seu celular. Ao adentrar a escola, as portas são abertas automaticamente ao detectarem as credenciais que estão gravadas em um crachâ computadorizado que ele carrega consigo. Ao chegar na sala de aula, as janelas são abertas, a luz é acessa, o slide é ligado e o conteúdo do seu celular é refletido no computador de forma automática, sem espera. O quadro é uma tela inteligente que permite que os alunos compartilhem suas dúvidas com a turma de forma rápida. Ao finalizar a aula, todo o contexto é salvo, a presença de todos é cadastrada e a sala se fecha, preparada para receber o próximo professor. 
+
+16. Como a computação ubíqua pode ajudar, socialmente, as pessoas a diminuar a sobrecarga de informações em um simples passeio pela mata?
+A computação obíqua pode ajudar a diminuir a sobrecarga de informações ao abstrair partes da realidade para nós em tempo real. Informações que possam nos sobrecarregar como clima do dia, trajeto, locais de abrigo e água e afins poderiam ser facilmente computados de maneira rápida e natural por dispositivos que seguissem esse paradigma. 

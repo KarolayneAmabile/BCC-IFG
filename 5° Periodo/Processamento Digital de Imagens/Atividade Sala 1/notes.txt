@@ -1,0 +1,171 @@
+// imprime o conteúdo da imagem, em número
+print(img)
+
+// mudanças lineares
+multiplicação -> + contraste
+divisao       -> - constraste 
+
+adição 	  -> + brilho
+subtracao -> - brilho
+
+
+
+
+// carrega a imagem
+from skimage.io import imread, imshow
+import matplotlib.pyplot as plt
+img = imread('lena.png')
+# imshow(img) -> deprecated
+plt.imshow(img)
+plt.show()
+
+
+// escala de cinza com mapeamento de cor padrao do imshow (vai do amarelo a verde) -> imagem fica verde
+from skimage.io import imread, imshow
+from skimage import color
+
+import matplotlib.pyplot as plt
+
+img = imread('lena.png')
+gray = color.rgb2gray(img)
+
+plt.imshow(gray)
+plt.show()
+
+
+
+// escala de cinza com mapeamento de cor cinza
+from skimage.io import imread, imshow
+from skimage import color
+
+import matplotlib.pyplot as plt
+
+img = imread('lena.png')
+gray = color.rgb2gray(img)
+
+plt.imshow(gray, cmap='gray')
+plt.show()
+
+
+
+// aumento de saturação -> operação linear de multiplicação e soma
+
+from skimage.io import imread, imshow
+from skimage import color
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+img = imread('lena.png')
+gray = color.rgb2gray(img)
+gray2 = 1.2*gray + 0.2
+gray2 = np.clip(gray2,0,1)
+
+
+fig,ax = plt.subplots(1, 2)
+ax[0].imshow(gray, cmap='gray')
+ax[1].imshow(gray2, cmap='gray')
+plt.show()
+
+
+
+// aumento da saturação por metodo não-linear, com normalização
+from skimage.io import imread, imshow
+from skimage import color
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+img = imread('lena.png')
+gray = color.rgb2gray(img)
+gray2 = 1.2*gray + 0.2
+gray2 = np.clip(gray2,0,1)
+
+gray3 = 1.2*np.log2(gray+0.2)
+gray3 = (gray3 - np.min(gray3)) / (np.max(gray3) - np.min(gray3))
+gray3 = np.clip(gray3,0,1)
+
+
+fig,ax = plt.subplots(1, 3)
+ax[0].imshow(gray, cmap='gray')
+ax[1].imshow(gray2, cmap='gray')
+ax[2].imshow(gray3, cmap='gray')
+plt.show()
+
+
+// aumento da saturação por metodo não-linear, solução via transformação da matriz em inteiros + histogramas
+from skimage.io import imread, imshow
+from skimage import color, io, util, exposure
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+img = imread('lena.png')
+gray1 = color.rgb2gray(img)
+gray2 = 1.2*gray1 + 0.2
+gray2 = np.clip(gray2,0,1)
+
+gray3 = 1.1*np.log2(util.img_as_ubyte(gray)+10)
+gray3 = np.clip(gray3,0,255)
+
+fig,ax = plt.subplots(2, 3)
+
+ax[0,0].imshow(gray1, cmap='gray')
+ax[0,1].imshow(gray2, cmap='gray')
+ax[0,2].imshow(gray3, cmap='gray')
+
+
+hist1, centers1 = exposure.histogram(util.img_as_ubyte(gray1))
+hist2, centers2 = exposure.histogram(util.img_as_ubyte(gray2))
+hist3, centers3 = exposure.histogram((gray3))
+
+ax[1,0].bar(centers1, hist1)
+ax[1,1].bar(centers2, hist2)
+ax[1,1].set_xlim(0,270)
+ax[1,1].set_ylim(0,6000)
+ax[1,2].bar(centers3, hist3)
+
+plt.show()
+
+
+// binarizacao
+from skimage.io import imread, imshow
+from skimage import color, io, util, exposure, filters
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+img = imread('lena.png')
+gray1 = color.rgb2gray(img)
+gray2 = 1.2*gray1 + 0.2
+gray2 = np.clip(gray2,0,1)
+
+gray3 = 1.1*np.log2(util.img_as_ubyte(gray)+10)
+gray3 = np.clip(gray3,0,255)
+
+fig,ax = plt.subplots(3, 3)
+
+ax[0,0].imshow(gray1, cmap='gray')
+ax[0,1].imshow(gray2, cmap='gray')
+ax[0,2].imshow(gray3, cmap='gray')
+
+
+hist1, centers1 = exposure.histogram(util.img_as_ubyte(gray1))
+hist2, centers2 = exposure.histogram(util.img_as_ubyte(gray2))
+hist3, centers3 = exposure.histogram((gray3))
+
+ax[1,0].bar(centers1, hist1)
+ax[1,1].bar(centers2, hist2)
+ax[1,1].set_xlim(0,270)
+ax[1,1].set_ylim(0,6000)
+ax[1,2].bar(centers3, hist3)
+
+ax[2,1].imshow(gray2 > 0.5,cmap='gray')
+tresh=filters.threshold_otsu(gray3)
+ax[2,2].imshow(gray3 > tresh,cmap='gray')
+
+plt.show()
+
+
+## todo: soma da imagem gray1 e gray2
+## operacao AND da imagem trash e otsu
