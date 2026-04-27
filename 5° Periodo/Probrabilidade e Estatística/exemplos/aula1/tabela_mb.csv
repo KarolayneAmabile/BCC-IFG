@@ -1,0 +1,37 @@
+N;civil;instrucao;n_filhos;salario;idade;regiao
+1;solteiro;ensino fundamental;-;4;26;interior
+2;casado;ensino fundamental;1;4.56;32;capital
+3;casado;ensino fundamental;2;5.25;36;capital
+4;solteiro;ensino medio;-;5.73;20;outra
+5;solteiro;ensino fundamental;-;6.26;40;outra
+6;casado;ensino fundamental;0;6.66;28;interior
+7;solteiro;ensino fundamental;-;6.86;41;interior
+8;solteiro;ensino fundamental;-;7.39;43;capital
+9;casado;ensino medio;1;7.59;34;capital
+10;solteiro;ensino medio;-;7.84;23;outra
+11;casado;ensino medio;2;8.12;33;interior
+12;solteiro;ensino fundamental;-;8.46;27;capital
+13;solteiro;ensino medio;-;8.74;37;outra
+14;casado;ensino fundamental;3;8.95;44;outra
+15;casado;ensino medio;0;9.13;30;interior
+16;solteiro;ensino medio;-;9.35;38;outra
+17;casado;ensino medio;1;9.77;31;capital
+18;casado;ensino fundamental;2;9.8;39;outra
+19;solteiro;superior;-;10.53;25;interior
+20;solteiro;ensino medio;-;10.76;37;interior
+21;casado;ensino medio;1;11.06;30;outra
+22;solteiro;ensino medio;-;11.59;34;capital
+23;solteiro;ensino fundamental;-;12;41;outra
+24;casado;superior;0;12.79;26;outra
+25;casado;ensino medio;2;13.23;32;interior
+26;casado;ensino medio;2;13.6;35;outra
+27;solteiro;ensino fundamental;-;13.85;46;outra
+28;casado;ensino medio;0;14.69;29;interior
+29;casado;ensino medio;5;14.71;40;interior
+30;casado;ensino medio;2;15.99;35;capital
+31;solteiro;superior;-;16.22;31;outra
+32;casado;ensino medio;1;16.61;36;interior
+33;casado;superior;3;17.26;43;capital
+34;solteiro;superior;-;18.75;33;capital
+35;casado;ensino medio;2;19.4;48;capital
+36;casado;superior;3;23.3;42;interior
