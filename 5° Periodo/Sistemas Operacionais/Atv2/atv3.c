@@ -1,4 +1,4 @@
-// gcc atv1.c -o atv1 -lpthread; ./atv1
+// gcc -O3 atv3.c -o atv3 -lpthread; ./atv3
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,31 +7,31 @@
 
 // NICE DOC: https://www.cse.cuhk.edu.hk/~ericlo/teaching/os/lab/9-PThread/Introduction.html
 
-#define SIZE 10000
-
-double *matrixA;
-double *matrixB;
-double *result_matrix;
+// Funciona, mas apenas para matrizes pequenas, pois dimensões muito grande estouram a stack
+// Matrizes grandes precisam ser usadas usando ponteiros e malloc, pois o malloc aloca na HEAP
+// to-do: estudar isso depois
+// Erro: Segmentation fault (core dumped)
+#define SIZE 300
 
 typedef struct {
     unsigned long long start;
     unsigned long long end;
+    double (*matrixA)[SIZE];
+    double (*matrixB)[SIZE];
+    double (*result_matrix)[SIZE];
 } range;
 
 void *matrixAdd(void *arg);
-void fillMatrix();
+void fillMatrix(double matrixA[SIZE][SIZE], double matrixB[SIZE][SIZE]);
 
 int main() {
     printf("Somatorio de duas matrizes quadraticas A e B\n");
 
-    matrixA       = (double *)malloc((size_t)SIZE * SIZE * sizeof(double));
-    matrixB       = (double *)malloc((size_t)SIZE * SIZE * sizeof(double));
-    result_matrix = (double *)malloc((size_t)SIZE * SIZE * sizeof(double));
-    if (!matrixA || !matrixB || !result_matrix) {
-        fprintf(stderr, "Erro ao alocar memória!\n");
-        return 1;
-    }
-    fillMatrix();
+    double matrixA[SIZE][SIZE];
+    double matrixB[SIZE][SIZE];
+    double result_matrix[SIZE][SIZE];
+
+    fillMatrix(matrixA, matrixB);
 
     unsigned int numThreads;
     do {
@@ -55,14 +55,15 @@ int main() {
         struct timespec start, end;
         clock_gettime(CLOCK_MONOTONIC, &start);
 
-        // pthread_t: to define a thread id
-        // um array pra armazenar os ids de cada thread criada
         pthread_t *threads = (pthread_t *)malloc(numThreads * sizeof(pthread_t));
         range *ranges = (range *)malloc(numThreads * sizeof(range));
 
         for (int i = 0; i < numThreads; i++) {
-            ranges[i].start = i * columnRanges;
-            ranges[i].end = (i + 1) * columnRanges;
+            ranges[i].start         = i * columnRanges;
+            ranges[i].end           = (i + 1) * columnRanges;
+            ranges[i].matrixA       = matrixA;
+            ranges[i].matrixB       = matrixB;
+            ranges[i].result_matrix = result_matrix;
             // pthread_create(thread_id, attr, start_routine, arg)
             // https://www.cse.cuhk.edu.hk/~ericlo/teaching/os/lab/9-PThread/Pass.html
             pthread_create(&threads[i], NULL, matrixAdd, &ranges[i]);
@@ -82,19 +83,16 @@ int main() {
         free(ranges);
     } while (1);
 
-    free(matrixA);
-    free(matrixB);
-    free(result_matrix);
     return 0;
 }
 
-void fillMatrix() {
+void fillMatrix(double matrixA[SIZE][SIZE], double matrixB[SIZE][SIZE]) {
     printf("Gerando serialmente os números aleatórios para as matrizes...\n");
     srand(0);
     for (unsigned long long i = 0; i < SIZE; i++)
         for (unsigned long long j = 0; j < SIZE; j++) {
-            matrixA[i * SIZE + j] = (double)((rand() % 10) + 1);
-            matrixB[i * SIZE + j] = (double)((rand() % 10) + 1);
+            matrixA[i][j] = (double)((rand() % 10) + 1);
+            matrixB[i][j] = (double)((rand() % 10) + 1);
         }
 }
 
@@ -102,21 +100,11 @@ void fillMatrix() {
 void *matrixAdd(void *arg) {
     range *r = (range *)arg;
     for (int rep = 0; rep < 100; rep++) {
-        for (unsigned long long i = 0; i < SIZE; i++) { 
+        for (unsigned long long i = 0; i < SIZE; i++) {
             for (unsigned long long j = r->start; j < r->end; j++) {
-                result_matrix[i * SIZE + j] = matrixA[i * SIZE + j] + matrixB[i * SIZE + j];
+                r->result_matrix[i][j] = r->matrixA[i][j] + r->matrixB[i][j];
             }
         }
     }
     return NULL;
 }
-
-// void *matrixAdd(void *arg) {
-//     range *r = (range *)arg;
-//     for (unsigned long long i = 0; i < SIZE; i++) {
-//         for (unsigned long long j = r->start; j < r->end; j++) {
-//             result_matrix[i * SIZE + j] = matrixA[i * SIZE + j] + matrixB[i * SIZE + j];
-//         }
-//     }
-//     return NULL;
-// }

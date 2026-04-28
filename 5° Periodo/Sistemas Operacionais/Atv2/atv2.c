@@ -1,4 +1,4 @@
-// gcc atv1.c -o atv1 -lpthread; ./atv1
+// gcc -O3 atv2.c -o atv2 -lpthread; ./atv1
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,10 +8,9 @@
 // NICE DOC: https://www.cse.cuhk.edu.hk/~ericlo/teaching/os/lab/9-PThread/Introduction.html
 
 #define SIZE 10000
-
-double *matrixA;
-double *matrixB;
-double *result_matrix;
+double matrixA[SIZE][SIZE];
+double matrixB[SIZE][SIZE];
+double result_matrix[SIZE][SIZE];
 
 typedef struct {
     unsigned long long start;
@@ -23,14 +22,6 @@ void fillMatrix();
 
 int main() {
     printf("Somatorio de duas matrizes quadraticas A e B\n");
-
-    matrixA       = (double *)malloc((size_t)SIZE * SIZE * sizeof(double));
-    matrixB       = (double *)malloc((size_t)SIZE * SIZE * sizeof(double));
-    result_matrix = (double *)malloc((size_t)SIZE * SIZE * sizeof(double));
-    if (!matrixA || !matrixB || !result_matrix) {
-        fprintf(stderr, "Erro ao alocar memória!\n");
-        return 1;
-    }
     fillMatrix();
 
     unsigned int numThreads;
@@ -81,10 +72,6 @@ int main() {
         free(threads);
         free(ranges);
     } while (1);
-
-    free(matrixA);
-    free(matrixB);
-    free(result_matrix);
     return 0;
 }
 
@@ -93,8 +80,8 @@ void fillMatrix() {
     srand(0);
     for (unsigned long long i = 0; i < SIZE; i++)
         for (unsigned long long j = 0; j < SIZE; j++) {
-            matrixA[i * SIZE + j] = (double)((rand() % 10) + 1);
-            matrixB[i * SIZE + j] = (double)((rand() % 10) + 1);
+            matrixA[i][j] = (double)((rand() % 10) + 1);
+            matrixB[i][j] = (double)((rand() % 10) + 1);
         }
 }
 
@@ -104,7 +91,7 @@ void *matrixAdd(void *arg) {
     for (int rep = 0; rep < 100; rep++) {
         for (unsigned long long i = 0; i < SIZE; i++) { 
             for (unsigned long long j = r->start; j < r->end; j++) {
-                result_matrix[i * SIZE + j] = matrixA[i * SIZE + j] + matrixB[i * SIZE + j];
+                result_matrix[i][j] = matrixA[i][j] + matrixB[i][j];
             }
         }
     }
