@@ -1,0 +1,139 @@
+import numpy as np
+from skimage import io , color, exposure , util,filters
+
+import matplotlib.pyplot as plt
+img= io.imread('lena.png')
+gray = color.rgb2gray(img)
+gray2= 1.2*gray + 0.2
+gray3= 1.1*np.log2(util.img_as_ubyte(gray)+10)
+gray2= np.clip(gray2,0,1)
+gray3= np.clip(gray3,0,255)
+fig,ax= plt.subplots(4,3)
+ax[0,0].imshow(gray,cmap='gray')
+ax[0,1].imshow(gray2,cmap='gray')
+ax[0,2].imshow(gray3,cmap='gray')
+hist,centers=exposure.histogram(util.img_as_ubyte(gray))
+hist2,centers2=exposure.histogram(util.img_as_ubyte(gray2))
+hist3,centers3=exposure.histogram(gray3)
+ax[1,0].bar(centers,hist)
+ax[1,1].bar(centers2,hist2)
+ax[1,1].set_ylim(0,6000)
+ax[1,1].set_xlim(0,270)
+ax[1,2].bar(centers3,hist3)
+binaria = gray2 > 0.5
+ax[2,1].imshow(binaria,cmap='gray')
+tresh=filters.threshold_otsu(gray3)
+binaria2= gray3 > tresh
+ax[2,2].imshow(binaria2,cmap='gray')
+img_eq=exposure.equalize_hist(gray)
+ax[2,0].imshow(img_eq,cmap='gray')
+hist4,centers4=exposure.histogram(util.img_as_ubyte(img_eq))
+ax[3,0].bar(centers4,hist4)
+ax[3,2].imshow(binaria*binaria2,cmap='gray')
+ax[3,1].imshow((gray+gray2)/2,cmap='gray')
+plt.show()
+
+---
+
+import numpy as np
+from skimage import io , color, exposure , util,filters
+from scipy.signal import convolve2d
+
+h2=np.array([[-1,0,1],
+            [-2,0,2],
+            [-1,0,1]])
+h1=np.array([[-1,-2,-1],
+        [0,0,0],
+         [1,2,1]])
+
+import matplotlib.pyplot as plt
+img= io.imread('noise.png',as_gray=True)
+imgborrada= io.imread('lenameioborrada.png',as_gray=True)
+#mediana
+mediana=filters.median(img)
+#Suavização
+kernel= np.ones((3,3))/9
+img_conv= convolve2d(img,kernel,mode='same',boundary='symm')
+#unsharp mask
+img_conv2= convolve2d(imgborrada,kernel,mode='same',boundary='symm')
+mask=imgborrada-img_conv2
+img_final=imgborrada+ 5*mask
+img_final=np.clip(img_final,0,1)
+print (mask.min(),mask.max())
+#sobel
+sobelx=convolve2d(imgborrada,h1,mode='same',boundary='symm')
+sobely=convolve2d(imgborrada,h2,mode='same',boundary='symm')
+mag=np.sqrt(sobelx**2+sobely**2)
+mag=mag/mag.max()
+
+fig,ax= plt.subplots(3,3)
+ax[0,0].imshow(img,cmap='gray')
+ax[0,1].imshow(mediana,cmap='gray')
+ax[0,2].imshow(img_conv,cmap='gray')
+ax[1,0].imshow(imgborrada,cmap='gray')
+ax[1,1].imshow(mask,cmap='gray')
+ax[1,2].imshow(img_final,cmap='gray')
+ax[2,0].imshow(mag,cmap='gray')
+plt.show()
+
+---
+
+import numpy as np
+from skimage import io
+from skimage.color import rgb2gray
+from skimage.util import img_as_ubyte
+import math
+from skimage.draw import disk
+
+
+def butterworth(shape,d0,n):
+  H=np.zeros(shape)
+  for u in range(shape[0]):
+    for v in range(shape[1]):
+      D_uv=np.sqrt( (u-shape[0]/2)**2 + (v-shape[1]/2)**2 )
+      H[u,v] = 1/ (1+ (D_uv/d0 )**(2*n))
+  return H
+
+def butterworth_band_reject(shape,d0,w,n):
+  H=np.zeros(shape)
+  for u in range(shape[0]):
+    for v in range(shape[1]):
+      D_uv=np.sqrt( (u-shape[0]/2)**2 + (v-shape[1]/2)**2 )
+      if D_uv==0:
+        H[u,v]=1
+      else:
+        H[u,v] = 1/ (1+ ((D_uv*w)/(D_uv**2-d0**2))**(2*n))
+  return H
+
+
+img= io.imread('moon.png',as_gray=True)
+f=np.fft.fft2(img)
+f_s=np.fft.fftshift(f)
+
+#Apenas para exibir
+temp= np.log(abs(f_s))
+io.imshow(temp, cmap="gray")
+
+---
+
+from skimage.io import imread, imshow
+from skimage.filters import threshold_otsu
+from skimage.morphology import (erosion, dilation, closing, opening,
+                                area_closing, area_opening,square, disk)
+from skimage.morphology import (dilation, disk)
+import matplotlib.pyplot as plt
+
+vaca=imread('ss.png')
+#print(vaca)
+grayvaca = imread('ss.png', as_gray=True)
+#tresh = threshold_otsu(dilated)
+binary = grayvaca > 0.4
+dilated= dilation(binary,disk(6))
+vaca[dilated,0]=255
+vaca[dilated,1]=255
+vaca[dilated,2]=255
+fig,ax= plt.subplots(1,2)
+ax[0].imshow(grayvaca,cmap='gray')
+ax[1].imshow(vaca,cmap='gray')
+
+

@@ -1,0 +1,552 @@
+## 3.0 - 3.7
+
+---
+
+**1**
+Frente: O que é o domínio espacial no processamento de imagens?
+Verso: É o próprio plano da imagem, onde as operações atuam diretamente nos pixels. Contrasta com o domínio da transformada (ex.: Fourier), que exige transformar a imagem antes de processá-la.
+
+---
+
+**2**
+Frente: Qual a equação geral das técnicas de domínio espacial e o que cada termo representa?
+Verso: g(x,y) = T[f(x,y)], onde f(x,y) é a imagem de entrada, g(x,y) é a imagem de saída e T é um operador aplicado numa vizinhança de (x,y).
+
+---
+
+**3**
+Frente: O que é um filtro espacial (máscara, kernel)?
+Verso: É uma vizinhança (geralmente retangular) acompanhada de uma operação predefinida. O filtro desloca-se pixel a pixel pela imagem, gerando um novo valor para cada posição.
+
+---
+
+**4**
+Frente: Quando a vizinhança tem tamanho 1×1, que operação resulta?
+Verso: Uma transformação de intensidade s = T(r), que depende apenas do valor do pixel em si, sem considerar vizinhos. É chamada de técnica ponto a ponto.
+
+---
+
+**5**
+Frente: Qual a fórmula do negativo de uma imagem com L níveis e para que serve?
+Verso: s = L – 1 – r. Produz o equivalente fotográfico negativo e é útil para realçar detalhes claros ou cinza em regiões escuras dominantes (ex.: mamografia).
+
+---
+
+**6**
+Frente: Qual a forma geral da transformação logarítmica e qual seu efeito?
+Verso: s = c·log(1 + r). Expande valores escuros para uma faixa mais ampla e comprime valores altos. Útil para comprimir grande faixa dinâmica, como no espectro de Fourier.
+
+---
+
+**7**
+Frente: Qual a fórmula da transformação de potência (gama) e o que γ controla?
+Verso: s = c·rᵞ. Valores γ < 1 expandem tons escuros; γ > 1 comprime tons escuros (útil para imagens desbotadas). Com c = 1 e γ = 1 resulta na identidade.
+
+---
+
+**8**
+Frente: O que é correção gama e por que é importante?
+Verso: É o pré-processamento com s = r^(1/γ) para compensar a resposta não linear de dispositivos (ex.: monitores CRT com γ ≈ 2,5). Garante que a imagem exibida corresponda à original.
+
+---
+
+**9**
+Frente: O que é alargamento de contraste e como é controlado?
+Verso: Técnica linear por partes que expande a faixa de intensidades. Dois pontos (r1, s1) e (r2, s2) definem a forma da função. Pode variar de identidade (sem mudança) até limiarização (imagem binária).
+
+---
+
+**10**
+Frente: O que é fatiamento de níveis de intensidade e quais são suas duas variantes?
+Verso: Técnica que enfatiza um intervalo [A, B] de intensidades. Variante 1: valores em [A,B] → branco, resto → preto (imagem binária). Variante 2: valores em [A,B] → valor alto, os demais são preservados.
+
+---
+
+**11**
+Frente: O que é fatiamento por planos de bits?
+Verso: Separação da imagem em N planos de 1 bit (para imagem de 8 bits, são 8 planos). Os planos mais significativos contêm a maior parte da informação visual; os menos significativos contribuem com detalhes sutis de intensidade.
+
+---
+
+**12**
+Frente: Como é definido o histograma de uma imagem digital?
+Verso: h(rk) = nk, onde rk é o k-ésimo nível de intensidade e nk é o número de pixels com esse nível. Normalizado: p(rk) = nk / MN, estimando a probabilidade de ocorrência de cada nível.
+
+---
+
+**13**
+Frente: Como é o histograma de imagens escuras, claras, de baixo contraste e de alto contraste?
+Verso: Escura: componentes concentrados à esquerda. Clara: concentrados à direita. Baixo contraste: histograma estreito no centro. Alto contraste: histograma largo, distribuição aproximadamente uniforme por toda a escala.
+
+---
+
+**14**
+Frente: O que é equalização de histograma e qual sua transformação discreta?
+Verso: Técnica automática que redistribui os níveis para uma distribuição uniforme. Fórmula: sk = (L–1) × Σ p(rj) para j = 0…k. O resultado tende a cobrir toda a escala de cinza, aumentando o contraste.
+
+---
+
+**15**
+Frente: Por que a equalização de histograma discreta raramente produz um histograma perfeitamente uniforme?
+Verso: Porque múltiplos valores de entrada podem ser mapeados para o mesmo valor de saída (mapeamento muitos-para-um). Novos níveis de intensidade não são criados, apenas redistribuídos.
+
+---
+
+**16**
+Frente: O que é especificação de histograma (casamento de histograma)?
+Verso: Técnica que transforma a imagem para que seu histograma se aproxime de um histograma pz(z) definido pelo usuário. Envolve equalizar a entrada e aplicar o inverso da transformação G(z) obtida do histograma desejado.
+
+---
+
+**17**
+Frente: Quando a equalização de histograma pode falhar e produzir resultado ruim?
+Verso: Quando a imagem tem grande concentração de pixels escuros: a transformação mapeia esse intervalo estreito para a extremidade superior da escala, resultando em imagem clara e desbotada (ex.: imagem da lua Fobos).
+
+---
+
+**18**
+Frente: O que é processamento local de histograma e quando é necessário?
+Verso: Aplica equalização ou especificação usando o histograma de uma vizinhança de cada pixel, em vez do histograma global. É necessário para realçar detalhes em pequenas áreas que não influenciam o histograma global.
+
+---
+
+**19**
+Frente: O que medem a média m e a variância σ² no contexto do histograma?
+Verso: A média m mede a intensidade média da imagem (brilho geral). A variância σ² mede o contraste. Ambas podem ser calculadas de forma global (imagem inteira) ou local (vizinhança de cada pixel).
+
+---
+
+**20**
+Frente: Qual a diferença entre correlação e convolução na filtragem espacial?
+Verso: Correlação: desloca a máscara e calcula a soma dos produtos em cada posição. Convolução: igual, mas a máscara é rotacionada 180° antes. Para máscaras simétricas os resultados são idênticos.
+
+---
+
+**21**
+Frente: O que acontece ao correlacionar um filtro com um impulso unitário discreto?
+Verso: Gera uma cópia do filtro rotacionada 180° na posição do impulso. Já a convolução gera uma cópia sem rotação na posição do impulso. Essa propriedade é fundamental na teoria de sistemas lineares.
+
+---
+
+**22**
+Frente: O que são filtros de suavização (filtros de média) e qual seu efeito colateral?
+Verso: Substituem cada pixel pela média dos vizinhos (máscara com coeficientes iguais). Reduzem ruído e borram pequenos detalhes, mas o efeito colateral indesejável é o borramento de bordas.
+
+---
+
+**23**
+Frente: O que é o filtro de mediana e em qual tipo de ruído ele se destaca?
+Verso: Filtro não linear que substitui o pixel pela mediana dos valores na vizinhança. É muito eficaz para remover ruído sal e pimenta (impulsivo), com borramento consideravelmente menor do que filtros de média de tamanho similar.
+
+---
+
+**24**
+Frente: Como eliminar pequenos objetos de uma imagem usando filtragem espacial?
+Verso: Aplicar um filtro de média com máscara maior que os objetos indesejados. Os objetos menores se mesclam ao fundo. Seguido de limiarização, obtém-se a detecção apenas dos objetos maiores e mais claros.
+
+---
+
+**25**
+Frente: Quais as condições que uma derivada de primeira ordem digital deve satisfazer?
+Verso: (1) Ser zero em áreas de intensidade constante. (2) Ser não nula no início de um degrau ou rampa. (3) Ser não nula ao longo de rampas de inclinação constante.
+
+---
+
+**26**
+Frente: O que é o laplaciano e como é implementado como máscara de filtragem?
+Verso: Operador derivativo de segunda ordem isotrópico: ∇²f = ∂²f/∂x² + ∂²f/∂y². Máscara básica: [0,1,0 / 1,–4,1 / 0,1,0]. Realça bordas e descontinuidades; atenua regiões de variação suave.
+
+---
+
+**27**
+Frente: Como usar o laplaciano para aguçar uma imagem sem perder o fundo?
+Verso: g(x,y) = f(x,y) + c·∇²f(x,y). Se a máscara tem coeficiente central negativo, usa-se c = –1 (subtrai); se central positivo, c = +1 (soma). A imagem original preserva o fundo e o laplaciano adiciona nitidez.
+
+---
+
+**28**
+Frente: O que é máscara de nitidez (unsharp masking) e o que é filtragem high-boost?
+Verso: 1. Borrar a imagem → f̄. 2. Obter a máscara: gmáscara = f – f̄. 3. Somar: g = f + k·gmáscara. Com k = 1: máscara de nitidez padrão. Com k > 1: filtragem high-boost, que amplifica ainda mais os detalhes.
+
+---
+
+**29**
+Frente: O que são os operadores de Sobel e para que servem?
+Verso: Duas máscaras 3×3 que aproximam as derivadas parciais gx e gy. Combinadas em M ≈ |gx| + |gy|, formam a imagem gradiente, realçando bordas e eliminando regiões de fundo com transição suave.
+
+---
+
+**30**
+Frente: Qual a diferença prática entre usar o laplaciano e o gradiente para realce de imagens?
+Verso: Laplaciano (2ª derivada): mais eficaz em detalhes finos, porém mais sensível a ruído. Gradiente (1ª derivada): mais robusto a ruído, com resposta mais forte em bordas proeminentes (rampas e degraus).
+
+
+---
+
+
+### 4.7 - 4.10
+
+---
+
+**1**
+Frente: O que representam baixas e altas frequências no espectro de Fourier de uma imagem?
+Verso: Baixas frequências correspondem a variações suaves de intensidade (paredes, céu, fundos uniformes). Altas frequências correspondem a variações abruptas, como bordas de objetos e ruído.
+
+---
+
+**2**
+Frente: Qual é a equação básica da filtragem no domínio da frequência?
+Verso: g(x,y) = ℑ⁻¹[H(u,v) · F(u,v)], onde F(u,v) é a DFT da imagem de entrada, H(u,v) é a função filtro e ℑ⁻¹ é a DFT inversa. O resultado g(x,y) é a imagem filtrada.
+
+---
+
+**3**
+Frente: O que é a função de transferência do filtro H(u,v) e como ela age sobre a imagem?
+Verso: É uma função que multiplica a DFT da imagem de entrada no domínio da frequência. Ela modifica seletivamente os componentes de frequência para atingir um objetivo (suavização, aguçamento etc.) antes de calcular a transformada inversa.
+
+---
+
+**4**
+Frente: O que acontece com a imagem se o termo dc (F(M/2, N/2)) for zerado no filtro?
+Verso: A intensidade média da imagem é reduzida a zero, tornando a imagem muito mais escura. O termo dc é proporcional à intensidade média da imagem.
+
+---
+
+**5**
+Frente: O que é um filtro passa-baixa e qual seu efeito na imagem?
+Verso: É um filtro que atenua altas frequências e deixa passar as baixas. O efeito é o borramento (suavização) da imagem, pois altas frequências correspondem a bordas e detalhes abruptos.
+
+---
+
+**6**
+Frente: O que é um filtro passa-alta e qual seu efeito na imagem?
+Verso: É um filtro que atenua baixas frequências e deixa passar as altas. O efeito é o realce de bordas e detalhes abruptos, mas com redução do contraste geral da imagem.
+
+---
+
+**7**
+Frente: Por que é necessário preencher a imagem com zeros antes da filtragem no domínio da frequência?
+Verso: Porque a multiplicação no domínio da frequência equivale à convolução circular no domínio espacial. Sem preenchimento, ocorre o erro de wraparound (sobreposição indevida de bordas periódicas), gerando resultados incorretos.
+
+---
+
+**8**
+Frente: Quais são os 7 passos do procedimento de filtragem no domínio da frequência?
+Verso: 1. Obter parâmetros P e Q (normalmente P=2M, Q=2N). 2. Preencher a imagem com zeros até P×Q. 3. Multiplicar por (−1)^(x+y) para centralizar. 4. Calcular a DFT. 5. Construir H(u,v) P×Q e calcular G = H·F. 6. Calcular a IDFT e tomar a parte real, multiplicando por (−1)^(x+y). 7. Extrair a região M×N do canto superior esquerdo.
+
+---
+
+**9**
+Frente: Por que se multiplica a imagem por (−1)^(x+y) antes de calcular a DFT?
+Verso: Para centralizar o espectro de Fourier, deslocando a origem para o centro do retângulo de frequência. Isso facilita a visualização e a construção de filtros simétricos centrados na origem.
+
+---
+
+**10**
+Frente: O que são filtros de deslocamento de fase zero e por que são importantes?
+Verso: São filtros que afetam igualmente as partes real e imaginária da DFT, sem alterar o ângulo de fase. São importantes porque pequenas alterações de fase causam distorções graves na imagem reconstruída, tornando-a irreconhecível.
+
+---
+
+**11**
+Frente: Qual é a relação entre um filtro no domínio da frequência H(u,v) e seu equivalente espacial h(x,y)?
+Verso: Eles formam um par de transformadas de Fourier: h(x,y) ⟺ H(u,v). O filtro espacial h(x,y) é a resposta ao impulso de H(u,v) e é obtido calculando a IDFT de H(u,v).
+
+---
+
+**12**
+Frente: O que são filtros FIR (Finite Impulse Response)?
+Verso: São filtros cuja resposta ao impulso tem duração finita. Como as implementações discretas da DFT sempre envolvem valores finitos, todos os filtros espaciais lineares tratados no livro são filtros FIR.
+
+---
+
+**13**
+Frente: Como um filtro gaussiano no domínio da frequência se relaciona com seu equivalente espacial?
+Verso: A transformada inversa de Fourier de uma gaussiana é também uma gaussiana. Essa relação recíproca significa que um filtro gaussiano estreito na frequência corresponde a um filtro gaussiano largo no espaço, e vice-versa.
+
+---
+
+**14**
+Frente: O que é o efeito de ringing e quando ele ocorre?
+Verso: São oscilações em forma de anel ao redor das bordas na imagem filtrada. Ocorre quando filtros ideais (com corte abrupto) são usados, pois a representação espacial de um filtro retangular é uma função sinc com lóbulos laterais que causam as oscilações.
+
+---
+
+**15**
+Frente: O que é o filtro passa-baixa ideal (ILPF) e qual sua fórmula?
+Verso: Deixa passar sem atenuação todas as frequências dentro de um círculo de raio D₀ e zera todas as demais. H(u,v) = 1 se D(u,v) ≤ D₀, e 0 se D(u,v) > D₀, onde D(u,v) é a distância ao centro do espectro.
+
+---
+
+**16**
+Frente: Por que o filtro passa-baixa ideal (ILPF) não é prático apesar de poder ser simulado em computador?
+Verso: Porque produz severo efeito de ringing nas imagens filtradas. Isso ocorre pois o corte abrupto no domínio da frequência corresponde, no domínio espacial, a uma função sinc com lóbulos laterais que geram as ondulações.
+
+---
+
+**17**
+Frente: Qual é a fórmula do filtro passa-baixa Butterworth (BLPF) e o que o parâmetro n controla?
+Verso: H(u,v) = 1 / (1 + [D(u,v)/D₀]^(2n)). O parâmetro n é a ordem do filtro: ordem baixa resulta em transição suave (similar ao gaussiano); ordem alta aproxima o comportamento do filtro ideal (com ringing crescente).
+
+---
+
+**18**
+Frente: Qual a vantagem do BLPF de ordem 1 e qual é o meio-termo recomendado?
+Verso: O BLPF de ordem 1 não apresenta ringing no domínio espacial. O BLPF de ordem 2 é considerado um bom meio-termo: apresenta filtragem eficaz com ringing mínimo e imperceptível.
+
+---
+
+**19**
+Frente: Qual é a fórmula do filtro passa-baixa gaussiano (GLPF) e qual sua principal vantagem?
+Verso: H(u,v) = e^(−D²(u,v) / 2D₀²). Sua principal vantagem é que não produz nenhum efeito de ringing, pois sua IDFT também é gaussiana. É o filtro preferido em aplicações onde artefatos são inaceitáveis (ex.: imagens médicas).
+
+---
+
+**20**
+Frente: Qual a diferença prática entre ILPF, BLPF e GLPF para suavização?
+Verso: ILPF: corte abrupto, máximo borramento, mas causa ringing severo. BLPF: transição controlada pela ordem n, permite equilibrar suavização e ringing; ordem 2 é o melhor custo-benefício. GLPF: transição mais suave, sem ringing, ideal para aplicações médicas.
+
+---
+
+**21**
+Frente: Como o espectro de potência é usado para definir a frequência de corte de filtros passa-baixa?
+Verso: Calcula-se a potência total PT somando |F(u,v)|² em todos os pontos. Define-se o raio D₀ que engloba α% dessa potência total. Isso permite comparar filtros em bases equivalentes e escolher o corte conforme a quantidade de informação a preservar.
+
+---
+
+**22**
+Frente: Por que filtros com corte abrupto no domínio da frequência geram ringing no domínio espacial?
+Verso: Porque a transformada de Fourier de uma função retangular (corte abrupto) é uma função sinc, que possui lóbulos laterais infinitos. Ao convolucionar esse sinc com a imagem, os lóbulos produzem as oscilações visíveis como ringing.
+
+
+---
+
+
+### 5.4
+
+---
+
+**1**
+Frente: Qual a fórmula do filtro de média aritmética e qual seu efeito principal?
+Verso: f̂(x,y) = (1/mn) Σ g(s,t) para (s,t) em Sxy. Calcula a média dos pixels na vizinhança. Atenua variações locais e reduz ruído, mas causa borramento da imagem.
+
+---
+
+**2**
+Frente: Qual a diferença prática entre o filtro de média aritmética e o de média geométrica?
+Verso: Ambos suavizam ruído aleatório (gaussiano, uniforme), mas o filtro de média geométrica tende a perder menos detalhes da imagem, produzindo resultado mais nítido, especialmente em bordas e contornos finos.
+
+---
+
+**3**
+Frente: Para qual tipo de ruído o filtro de média harmônica é indicado e para qual ele falha?
+Verso: Funciona bem para ruído de sal (pixels claros) e para ruído gaussiano. Falha para ruído de pimenta (pixels escuros).
+
+---
+
+**4**
+Frente: O que é o filtro de média contra-harmônica, o que o parâmetro Q controla e quais são os casos especiais?
+Verso: f̂(x,y) = Σ g^(Q+1) / Σ g^Q na vizinhança. Q > 0 elimina ruído de pimenta; Q < 0 elimina ruído de sal. Com Q = 0 equivale à média aritmética; com Q = −1 equivale à média harmônica. Não elimina os dois tipos simultaneamente.
+
+---
+
+**5**
+Frente: O que acontece se o sinal errado de Q for escolhido no filtro contra-harmônico?
+Verso: Os resultados podem ser desastrosos: usar Q positivo em imagem com ruído de sal (em vez de pimenta) amplifica o ruído em vez de removê-lo, tornando a imagem inutilizável.
+
+---
+
+**6**
+Frente: O que é o filtro de máximo e para qual tipo de ruído ele é eficaz?
+Verso: f̂(x,y) = máx{g(s,t)} na vizinhança Sxy (100º percentil). É eficaz para remover ruído de pimenta (pixels muito escuros), pois seleciona o valor mais alto da vizinhança, eliminando os pontos escuros espúrios.
+
+---
+
+**7**
+Frente: O que é o filtro de mínimo e para qual tipo de ruído ele é eficaz?
+Verso: f̂(x,y) = mín{g(s,t)} na vizinhança Sxy (0º percentil). É eficaz para remover ruído de sal (pixels muito claros), pois seleciona o valor mais baixo, eliminando os pontos claros espúrios.
+
+---
+
+**8**
+Frente: O que é o filtro de ponto médio e para qual tipo de ruído ele é mais adequado?
+Verso: f̂(x,y) = (1/2)[máx{g} + mín{g}] na vizinhança. Combina estatística de ordem com média. Funciona melhor para ruído aleatoriamente distribuído, como gaussiano ou uniforme.
+
+---
+
+**9**
+Frente: O que é o filtro de média alfa cortada e como ele se comporta nos casos extremos de d?
+Verso: Exclui os d/2 menores e d/2 maiores valores da vizinhança e calcula a média dos mn − d restantes. Com d = 0 equivale à média aritmética; com d = mn − 1 equivale à mediana. Valores intermediários de d são úteis para combinações de ruído gaussiano e sal e pimenta.
+
+---
+
+**10**
+Frente: O que é o filtro adaptativo de redução de ruído local e quais são as três situações que ele considera?
+Verso: Calcula f̂(x,y) = g(x,y) − (ση²/σL²)[g(x,y) − mL]. Situação 1: se ση² = 0, retorna g(x,y) sem alteração. Situação 2: se σL² >> ση², preserva o valor original (região de borda). Situação 3: se σL² = ση², aplica a média local (área uniforme com ruído).
+
+---
+
+**11**
+Frente: Qual a principal vantagem do filtro adaptativo de redução de ruído em relação aos filtros de média?
+Verso: O filtro adaptativo reduz o ruído de forma similar aos filtros de média, mas preserva muito melhor as bordas e detalhes da imagem, pois ajusta sua resposta conforme as características locais de contraste (variância local).
+
+---
+
+**12**
+Frente: O que é o filtro adaptativo de mediana e por que ele é superior ao filtro de mediana padrão?
+Verso: É um filtro que aumenta dinamicamente o tamanho da janela durante a filtragem. Vantagens: lida com ruído impulsivo de alta densidade (Pa, Pb > 0,2), preserva melhor os detalhes e bordas ao não substituir pixels de nível intermediário pela mediana, reduzindo distorções.
+
+---
+
+**13**
+Frente: Descreva a lógica dos estágios A e B do filtro adaptativo de mediana.
+Verso: Estágio A: verifica se a mediana zmed é um impulso (zmín < zmed < zmáx). Se não for impulso, vai ao estágio B; se for, aumenta a janela e repete. Estágio B: verifica se o pixel central zxy é um impulso (zmín < zxy < zmáx). Se não for, retorna zxy inalterado; se for, retorna zmed.
+
+---
+
+**14**
+Frente: Por que o ruído periódico é tratado preferencialmente no domínio da frequência?
+Verso: Porque o ruído periódico aparece como picos concentrados de energia no espectro de Fourier, em posições correspondentes às frequências da interferência. Isso permite isolá-lo com filtros seletivos sem afetar o restante da imagem.
+
+---
+
+**15**
+Frente: O que é um filtro rejeita-banda e qual sua aplicação principal na restauração?
+Verso: É um filtro que atenua todas as frequências dentro de uma faixa circular ao redor de um raio D₀, deixando passar as demais. É usado para remover ruído periódico cujas frequências são conhecidas aproximadamente, como interferência senoidal distribuída em um círculo no espectro.
+
+---
+
+**16**
+Frente: O que é um filtro passa-banda e para que serve na prática de restauração?
+Verso: HBP(u,v) = 1 − HBR(u,v): é o complemento do filtro rejeita-banda. Usado principalmente para isolar e visualizar o padrão de ruído de uma imagem, permitindo analisar a interferência separada do conteúdo útil.
+
+---
+
+**17**
+Frente: O que é um filtro notch e qual é a regra de simetria que ele deve obedecer?
+Verso: Rejeita (ou passa) frequências em vizinhanças predefinidas em torno de pontos específicos no espectro. Devido à simetria da transformada de Fourier, os filtros notch devem aparecer em pares simétricos em relação à origem, exceto se o notch estiver na própria origem.
+
+---
+
+**18**
+Frente: O que é a filtragem notch ótima e qual critério ela minimiza?
+Verso: É uma técnica que extrai o padrão de interferência via filtro passa-notch e depois subtrai uma parcela ponderada desse padrão da imagem corrompida: f̂(x,y) = g(x,y) − w(x,y)·η(x,y). A função de ponderação w(x,y) é calculada de forma a minimizar a variância local da estimativa restaurada.
+
+---
+
+**19**
+Frente: Qual é a tabela resumo dos filtros de média e seus tipos de ruído mais adequados?
+Verso: Aritmética: ruído gaussiano/uniforme. Geométrica: gaussiano/uniforme, com menos borramento. Harmônica: ruído de sal e gaussiano. Contra-harmônica (Q>0): ruído de pimenta. Contra-harmônica (Q<0): ruído de sal. Mediana: impulsivo (sal e pimenta). Alfa cortada: múltiplos tipos simultâneos.
+
+
+---
+
+
+### 9.0 - 9.3
+---
+
+**1**
+Frente: O que é morfologia matemática no contexto do processamento de imagens?
+Verso: É uma abordagem baseada na teoria dos conjuntos para extrair componentes de imagens úteis na representação e descrição de formas, como fronteiras, esqueletos e fecho convexo. Opera principalmente em imagens binárias, onde os conjuntos representam os pixels dos objetos.
+
+---
+
+**2**
+Frente: Como os objetos de uma imagem binária são representados na morfologia matemática?
+Verso: Como conjuntos de elementos do espaço Z², onde cada elemento é um vetor bidimensional (x, y) correspondente às coordenadas de um pixel pertencente ao objeto (frente/foreground). O fundo (background) é o complemento desse conjunto.
+
+---
+
+**3**
+Frente: O que é a reflexão de um conjunto B na morfologia e como é calculada?
+Verso: É o conjunto B̂ obtido substituindo cada ponto (x, y) de B por (−x, −y). Equivale a rotacionar o conjunto 180° em torno da origem, analogamente à inversão feita na convolução espacial.
+
+---
+
+**4**
+Frente: O que é a translação de um conjunto B por um ponto z = (z₁, z₂)?
+Verso: É o conjunto (B)z obtido somando z a cada ponto de B, ou seja, cada coordenada (x, y) é substituída por (x + z₁, y + z₂). Equivale a deslocar o conjunto inteiro para a posição z.
+
+---
+
+**5**
+Frente: O que é um elemento estruturante (ES) em morfologia?
+Verso: É um pequeno conjunto ou subimagem usado para examinar a imagem em busca de propriedades de interesse. Define a forma e o tamanho da operação morfológica. Deve ter uma origem especificada e ser convertido em arranjo retangular para implementação computacional.
+
+---
+
+**6**
+Frente: O que é a erosão de A por B e qual sua fórmula?
+Verso: A ⊖ B = {z | (B)z ⊆ A}: é o conjunto de todos os pontos z tais que B transladado por z está completamente contido em A. O efeito prático é diminuir ou afinar os objetos da imagem, removendo detalhes menores que o elemento estruturante.
+
+---
+
+**7**
+Frente: Qual é a forma equivalente da erosão usando complemento e o que ela expressa?
+Verso: A ⊖ B = {z | (B)z ∩ Aᶜ = ∅}: a erosão de A por B é o conjunto de posições z onde B transladado não tem nenhum elemento em comum com o fundo (complemento de A). As duas formas são matematicamente equivalentes.
+
+---
+
+**8**
+Frente: Qual o efeito prático da erosão em imagens binárias e como o tamanho do ES influencia o resultado?
+Verso: A erosão diminui e afina os objetos. Detalhes menores que o ES são removidos. Quanto maior o ES, mais estruturas são eliminadas: ESs menores removem apenas detalhes finos (linhas finas), enquanto ESs maiores eliminam objetos progressivamente maiores.
+
+---
+
+**9**
+Frente: O que é a dilatação de A por B e qual sua fórmula?
+Verso: A ⊕ B = {z | (B̂)z ∩ A ≠ ∅}: é o conjunto de todos os deslocamentos z tal que B refletido e transladado por z se sobrepõe a pelo menos um elemento de A. O efeito é expandir ou engrossar os objetos da imagem.
+
+---
+
+**10**
+Frente: Qual a analogia entre dilatação e convolução espacial e qual a diferença fundamental?
+Verso: A dilatação envolve refletir B, deslocá-lo e verificar sobreposições, de forma análoga à convolução espacial. A diferença fundamental é que a dilatação é baseada em operações de conjunto (não linear), enquanto a convolução é uma operação linear.
+
+---
+
+**11**
+Frente: Quais são as propriedades de dualidade entre erosão e dilatação?
+Verso: (A ⊖ B)ᶜ = Aᶜ ⊕ B̂ e (A ⊕ B)ᶜ = Aᶜ ⊖ B̂. Ou seja, a erosão de A por B equivale ao complemento da dilatação do complemento de A por B refletido, e vice-versa. Para ES simétrico (B̂ = B), basta dilatar o fundo e complementar o resultado.
+
+---
+
+**12**
+Frente: O que é a abertura morfológica, qual sua fórmula e qual seu efeito geométrico?
+Verso: A ∘ B = (A ⊖ B) ⊕ B: erosão seguida de dilatação com o mesmo ES. Geometricamente equivale a "rolar" B pelo interior da fronteira de A. Suaviza contornos, rompe istmos, elimina saliências finas e pequenas protuberâncias menores que o ES.
+
+---
+
+**13**
+Frente: O que é o fechamento morfológico, qual sua fórmula e qual seu efeito geométrico?
+Verso: A • B = (A ⊕ B) ⊖ B: dilatação seguida de erosão com o mesmo ES. Geometricamente equivale a "rolar" B pelo exterior da fronteira de A. Funde descontinuidades estreitas, preenche buracos pequenos e lacunas no contorno, e alonga golfos finos.
+
+---
+
+**14**
+Frente: Qual a diferença prática entre abertura e fechamento morfológico?
+Verso: Abertura: remove objetos pequenos e saliências do foreground (objetos claros em fundo escuro), arredondando cantos externos. Fechamento: preenche buracos e lacunas no foreground (objetos escuros em fundo claro), arredondando cantos internos. São operações duais entre si.
+
+---
+
+**15**
+Frente: O que é a propriedade de idempotência da abertura e do fechamento?
+Verso: (A ∘ B) ∘ B = A ∘ B e (A • B) • B = A • B. Isso significa que aplicar abertura ou fechamento mais de uma vez não altera o resultado após a primeira aplicação. A operação já atingiu seu efeito máximo na primeira vez.
+
+---
+
+**16**
+Frente: Como a combinação abertura seguida de fechamento é usada como filtro morfológico?
+Verso: A abertura remove o ruído de fundo (elementos claros espúrios menores que o ES). O fechamento subsequente preenche lacunas criadas pela abertura nas estruturas de interesse. Juntos formam um filtro morfológico que remove ruído impulsivo preservando as estruturas principais da imagem.
+
+---
+
+**17**
+Frente: Quais as propriedades da abertura em relação ao conjunto original A?
+Verso: (a) A ∘ B é subconjunto de A (a abertura nunca expande o conjunto original). (b) Se C ⊆ D, então C ∘ B ⊆ D ∘ B (preserva a ordem de inclusão). (c) (A ∘ B) ∘ B = A ∘ B (idempotência).
+
+---
+
+**18**
+Frente: Quais as propriedades do fechamento em relação ao conjunto original A?
+Verso: (a) A é subconjunto de A • B (o fechamento nunca encolhe o conjunto original). (b) Se C ⊆ D, então C • B ⊆ D • B (preserva a ordem de inclusão). (c) (A • B) • B = A • B (idempotência).
